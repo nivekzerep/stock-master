@@ -48,7 +48,7 @@
 
                             <!-- Stock -->
                             <div class="mb-4">
-                                <x-input-label for="stock" :value="__('Stock Initial')" />
+                                <x-input-label for="stock" :value="__('Stock Inicial')" />
                                 <x-text-input id="stock" class="block mt-1 w-full" type="number" min="0" name="stock" :value="old('stock', 0)" required />
                                 <x-input-error :messages="$errors->get('stock')" class="mt-2" />
                             </div>
