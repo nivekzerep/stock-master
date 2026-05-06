@@ -26,7 +26,7 @@ Para ejecutar este proyecto en un entorno local, se requiere lo siguiente:
 
 ## Instrucciones paso a paso para ejecutar el proyecto
 
-Sigue estas instrucciones estrictamente en orden para inicializar el proyecto sin errores.
+Sigue estas instrucciones para inicializar el proyecto sin errores.
 
 ### 1. Clonar el repositorio
 Abre tu terminal y ejecuta:
@@ -43,7 +43,7 @@ npm install
 ```
 
 ### 3. Compilar los assets del Frontend (Tailwind/Vite)
-Es obligatorio compilar los estilos para que la interfaz se visualice correctamente:
+Es necesario compilar los estilos para que la interfaz se visualice correctamente:
 ```bash
 npm run build
 ```
