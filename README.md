@@ -1,6 +1,6 @@
 # StockMaster - Sistema de Inventario y Pedidos 
 
-StockMaster es una aplicación web desarrollada en Laravel para la gestión eficiente de un catálogo de productos, categorías y la simulación de órdenes de pedido en tiempo real. Este proyecto cumple con los requerimientos de la prueba técnica para la posición de Jr Fullstack Web Dev.
+StockMaster es una aplicación web desarrollada en Laravel para la gestión eficiente de un catálogo de productos, categorías y la simulación de órdenes de pedido en tiempo real.
 
 ## Características Principales
 
