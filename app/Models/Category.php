@@ -3,13 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Category extends Model
 {
-    // Permite guardar estos campos masivamente (mass assignment)
+    use HasFactory;
     protected $fillable = ['name', 'description'];
 
-    // Relación: Una categoría tiene muchos productos
     public function products()
     {
         return $this->hasMany(Product::class);

@@ -22,7 +22,7 @@
 
                         <!-- Description -->
                         <div class="mb-4">
-                            <x-input-label for="description" :value="__('Descripción (Nula = Opcional)')" />
+                            <x-input-label for="description" :value="__('Descripción (Opcional)')" />
                             <textarea id="description" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm block mt-1 w-full" name="description">{{ old('description') }}</textarea>
                             <x-input-error :messages="$errors->get('description')" class="mt-2" />
                         </div>

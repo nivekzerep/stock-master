@@ -10,10 +10,10 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        // 1. Inicio de la consulta base (Query Builder) e incluimos a su categoría
+        // Se utiliza Eager Loading de la relación category para evitar problemas de N+1 queries
         $query = Product::with('category');
 
-        // 2. Filtro: Búsqueda por Nombre o SKU
+        // Aplicación de filtros de búsqueda dinámicos
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function($q) use ($search) {
@@ -22,26 +22,23 @@ class ProductController extends Controller
             });
         }
 
-        // 3. Filtro: Por Categoría Select
         if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
         }
 
-        // 4. Ordenamiento (Precio o Stock, ASC o DESC)
+        // Ordenamiento controlado por arreglo para prevenir inyecciones SQL
         if ($request->filled('sort_by') && $request->filled('direction')) {
-            // Solo permitimos columnas seguras para evitar inyección SQL
             $allowedSorts = ['price', 'stock'];
             if (in_array($request->sort_by, $allowedSorts)) {
                 $direction = $request->direction === 'desc' ? 'desc' : 'asc';
                 $query->orderBy($request->sort_by, $direction);
             }
         } else {
-            $query->orderBy('id', 'desc'); // Orden por defecto
+            $query->orderBy('id', 'desc');
         }
 
-        // 5. Ejecutamos la consulta y la mandamos a la vista
         $products = $query->get();
-        $categories = Category::all(); // Necesarias para el dropdown de filtros
+        $categories = Category::all();
 
         return view('products.index', compact('products', 'categories'));
     }
@@ -54,9 +51,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // Validación estricta solicitada en la prueba:
-        // - SKU único (unique:products,sku)
-        // - Stock no negativo (min:0)
+        // Validaciones estrictas de negocio: valores de catálogo requeridos y cantidades no negativas
         $request->validate([
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
@@ -78,7 +73,7 @@ class ProductController extends Controller
 
     public function update(Request $request, Product $product)
     {
-        // Misma validación, pero el SKU ignora el ID actual (para que deje guardar sin chocar consigo mismo)
+        // El validador del SKU ignora el ID del producto actual durante la edición
         $request->validate([
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
