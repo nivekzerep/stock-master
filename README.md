@@ -1,59 +1,87 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# StockMaster - Sistema de Inventario y Pedidos 
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+StockMaster es una aplicación web desarrollada en Laravel para la gestión eficiente de un catálogo de productos, categorías y la simulación de órdenes de pedido en tiempo real. Este proyecto cumple con los requerimientos de la prueba técnica para la posición de Jr Fullstack Web Dev.
 
-## About Laravel
+## Características Principales
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **Autenticación Segura:** Sistema de Login y Registro utilizando Laravel Breeze.
+- **Gestión de Inventario (CRUD):** Creación, lectura, actualización y eliminación de Productos y Categorías.
+- **Validaciones de Negocio:** Prevención de stock negativo y validación de SKU únicos.
+- **Búsqueda y Filtros Dinámicos:** Buscador por nombre/SKU, filtrado por categorías y ordenamiento ascendente/descendente (protegido contra inyección SQL).
+- **Módulo de Pedidos Transaccional:** Uso de `DB::transaction` para garantizar la deducción exacta del stock y la integridad de los datos.
+- **Generación de PDF:** Exportación de comprobantes de órdenes al instante utilizando DomPDF.
+- **Optimización de consultas:** Implementación de *Eager Loading* para prevenir problemas de rendimiento (N+1 queries).
+- **Localización Automática:** Interfaz, validaciones y formato de fechas configurados 100% en español.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Requisitos Previos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Para ejecutar este proyecto en un entorno local, se requiere lo siguiente:
 
-## Learning Laravel
+- PHP >= 8.2
+- Composer
+- Node.js y NPM
+- MySQL (o MariaDB)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Instrucciones paso a paso para ejecutar el proyecto
 
-## Laravel Sponsors
+Sigue estas instrucciones estrictamente en orden para inicializar el proyecto sin errores.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 1. Clonar el repositorio
+Abre tu terminal y ejecuta:
+```bash
+git clone https://github.com/nivekzerep/stock-master.git
+cd stock-master
+```
 
-### Premium Partners
+### 2. Instalar dependencias (Backend y Frontend)
+Instala los paquetes de PHP y JavaScript necesarios:
+```bash
+composer install
+npm install
+```
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+### 3. Compilar los assets del Frontend (Tailwind/Vite)
+Es obligatorio compilar los estilos para que la interfaz se visualice correctamente:
+```bash
+npm run build
+```
 
-## Contributing
+### 4. Configurar el entorno y Base de Datos
+Copia el archivo de ejemplo para generar tus variables de entorno locales:
+```bash
+cp .env.example .env
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Genera la llave de encriptación de la aplicación:
+```bash
+php artisan key:generate
+```
 
-## Code of Conduct
+Abre tu gestor de base de datos (MySQL Workbench, phpMyAdmin, DBeaver, etc.) y crea una base de datos vacía llamada `stock_master`. Luego, abre el archivo `.env` en la raíz del proyecto y verifica que tus credenciales coincidan:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=stock_master
+DB_USERNAME=root      # <- Cambia por tu usuario de MySQL
+DB_PASSWORD=          # <- Cambia por tu contraseña de MySQL
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5. Ejecutar Migraciones
+Una vez configurado el `.env` y creada la BD, construye las tablas relacionales:
+```bash
+php artisan migrate
+```
+*(Nota: Este proyecto no requiere Seeders. Puedes registrar un usuario nuevo directamente en la interfaz).*
 
-## Security Vulnerabilities
+### 6. Levantar el servidor
+Finalmente, inicia el servidor local de Laravel:
+```bash
+php artisan serve
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+La aplicación estará lista y funcionando en: [http://localhost:8000](http://localhost:8000)
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Para comenzar a probar el sistema, dirígete a la ruta principal, haz clic en **"Registrarse"** en la esquina superior derecha, crea un usuario y tendrás acceso al dashboard del inventario.
